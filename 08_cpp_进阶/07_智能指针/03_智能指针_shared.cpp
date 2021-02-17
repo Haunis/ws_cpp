@@ -60,30 +60,33 @@ public:
 int main(int argc, char *argv[])
 {
 	printf("------------------1.1 方式1初始化：std::make_shared<T>()-------------------\n");
-	//	auto ptr1 = std::make_shared<Person>();
-	std::shared_ptr<Person> ptr1 = std::make_shared<Person>();					   //都可以
-	printf("ptr1.get()=%#x, ptr1.use_count()=%d\n", ptr1.get(), ptr1.use_count()); //1
 	{
-		printf("\n--------start------\n");
-		auto ptr2 = ptr1;		 // 通过复制构造函数使两个对象管理同一块内存
-		std::shared_ptr<Person> ptr3;		 // 初始化为空
-		ptr3 = ptr1;	  // 通过赋值，共享内存
-		printf("ptr1.get()=%#x, ptr1.use_count()=%d\n", ptr1.get(), ptr1.use_count()); //3
-		printf("ptr2.get()=%#x, ptr2.use_count()=%d\n", ptr2.get(), ptr2.use_count()); //3
-		printf("ptr3.get()=%#x, ptr3.use_count()=%d\n", ptr3.get(), ptr3.use_count()); //3
-		printf("--------end------\n");
+		//	auto ptr1 = std::make_shared<Person>();
+		std::shared_ptr<Person> ptr1 = std::make_shared<Person>();					   //都可以
+		printf("ptr1.get()=%#x, ptr1.use_count()=%d\n", ptr1.get(), ptr1.use_count()); //1
+		{
+			printf("\n--------start------\n");
+			auto ptr2 = ptr1; // 通过复制构造函数使两个对象管理同一块内存
+			std::shared_ptr<Person> ptr3;	 // 初始化为空
+			ptr3 = ptr1;	 // 通过赋值，共享内存
+			printf("ptr1.get()=%#x, ptr1.use_count()=%d\n", ptr1.get(), ptr1.use_count()); //3
+			printf("ptr2.get()=%#x, ptr2.use_count()=%d\n", ptr2.get(), ptr2.use_count()); //3
+			printf("ptr3.get()=%#x, ptr3.use_count()=%d\n", ptr3.get(), ptr3.use_count()); //3
+			printf("--------end------\n");
+		}
+
+		// 此时ptr2与ptr3对象析构了,只有ptr1持有Person的指针
+		printf("ptr1.get()=%#x, ptr1.use_count()=%d\n", ptr1.get(), ptr1.use_count()); //1
+		std::shared_ptr<Person> ptr2 = std::make_shared<Person>(); //会new一个Person,和ptr1里Person指针无关系
+		printf("ptr1.get()=%#x, ptr1.use_count()=%d\n", ptr1.get(), ptr1.use_count()); //1；还是1
+
+		ptr1->func();
+		ptr1.get()->func(); //二者使用等价
 	}
 
-	// 此时ptr2与ptr3对象析构了,只有ptr1持有Person的指针
-	printf("ptr1.get()=%#x, ptr1.use_count()=%d\n", ptr1.get(), ptr1.use_count()); //1
-	std::shared_ptr<Person> ptr2 = std::make_shared<Person>();//会new一个Person,和ptr1里Person指针无关系
-	printf("ptr1.get()=%#x, ptr1.use_count()=%d\n", ptr1.get(), ptr1.use_count()); //1；还是1
-
-	ptr1->func();
-	ptr1.get()->func(); //二者使用等价
-
 	printf("\n------------------1.2 方式2初始化：ptr(T*)-------------------\n");
-	/*
+	{
+		/*
 		std::shared_ptr与std::unique_ptr内部实现机理有区别，前者内部使用两个指针，
 		一个指针用于管理实际的指针，另外一个指针指向一个”控制块“，其中记录了哪些对象共同管理同一个指针
 		这是在初始化完成的，所以如果单独初始化两个对象，尽管管理的是同一块内存，它们各自的”控制块“没有互相记录的。 
@@ -93,14 +96,14 @@ int main(int argc, char *argv[])
 		使用std::make_shared进行初始化就不会出现该问题，所以要推荐使用
 	*/
 
-	Person *pPerson = new Person;
-	// std::shared_ptr<Person> ptr21(pPerson);//ok;这样也能初始化
-	std::shared_ptr<Person> ptr21{pPerson};
-	printf("ptr1.get()=%#x, ptr21.use_count()=%d\n", ptr21.get(), ptr21.use_count()); //1
+		Person *pPerson = new Person;
+		// std::shared_ptr<Person> ptr21(pPerson);//ok;这样也能初始化
+		std::shared_ptr<Person> ptr21{pPerson};
+		printf("ptr1.get()=%#x, ptr21.use_count()=%d\n", ptr21.get(), ptr21.use_count()); //1
 
-	std::shared_ptr<Person> ptr22{pPerson};	  //运行时报错，不可以使用同一个指针初始化，会导致对象被析构两次
-	printf("ptr1.get()=%#x, ptr22.use_count()=%d\n", ptr22.get(), ptr22.use_count()); //1
-
+		std::shared_ptr<Person> ptr22{pPerson};											  //运行时报错，不可以使用同一个指针初始化，会导致对象被析构两次
+		printf("ptr1.get()=%#x, ptr22.use_count()=%d\n", ptr22.get(), ptr22.use_count()); //1
+	}
 	printf("\n----------------code end----------------\n");
 
 	//	cin.ignore(1);
