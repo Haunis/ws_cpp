@@ -2,13 +2,13 @@
  *  Created on: 2019年3月13日
  * 
  * 格式说明
+ * 	%c  - char
  *	%d  -  int
  *	%ld -long int
  *	%lu -long unsigned int
  
  *	%lld - long long
  *	%hd - 短整型
- *	%c  - char
  *	%f -  float
  *	%lf - double
  *	%u - 无符号数
