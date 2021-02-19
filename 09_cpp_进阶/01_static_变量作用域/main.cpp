@@ -35,6 +35,8 @@ int g_count = 0;		 //全局变量
 extern int g_var;		 //表明该变量是在别的地方定义
 extern int g_static_var; //表明该变量是在别的地方定义，虽然声明了，但是该文件无法访问
 
+int g_temp = g_count; //c++ ok;但c语言不行，c语言初始化变量时不能用其他变量赋值，只能用常量赋值
+
 void fun()
 {
 	int inner_count = 0;
