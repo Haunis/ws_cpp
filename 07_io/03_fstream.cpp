@@ -1,8 +1,5 @@
 /*
- * MainFileWrite.cpp
- *
  *  Created on: 2019年3月12日
- *      Author: BTI-PC
  *
  *	C++标准函数之打开文件
  *	1.主要涉及的类

@@ -4,8 +4,6 @@
  *  Created on: 2019年3月13日
  *      Author: BTI-PC
  *
- *	演示malloc和realloc函数的用法
- *
  *	realloc函数做所的工作:
  *		1.重新申请内存
  *		2.此函数会在旧内存的后面去扩展空间。
@@ -20,36 +18,28 @@
 
 int main()
 {
-	printf("输入学生数量 count :");
-	int count;
-	scanf("%d", &count);
-
-	int *p = (int *)malloc(sizeof(int) * count);//申请堆内存用于存储学生id
+	int count = 3;
+	int *p = (int *)malloc(sizeof(int) * count); //申请堆内存用于存储学生id
 
 	for (int i = 0; i < count; i++) //c11标准
 	{
-		printf("please enter student %d ID: ", i + 1);
-		scanf("%d", (p + i));
+		*(p + i) = i;
 	}
 
-	//新来了几个学生
-	int newCount;
-	printf("please enter new student num :");
-	scanf("%d", &newCount);
-
+	int newCount = 4;
 	p = realloc(p, sizeof(int) * (count + newCount));
+	
 	for (int i = 0; i < newCount; i++)
 	{
-		printf("please enter new student %d ID : ", i + 1);
-		scanf("%d", (p + i + count));
+		*(p + count + i) = i + 10;
 	}
 
 	//打印结果
 	for (int i = 0; i < count + newCount; i++)
 	{
-		printf("student %d id %d\n", i + 1, *(p + i));
+		printf("%d\n", *(p + i));
 	}
-
-	system("pause");
+	free(p);
+	// system("pause");
 	return 0;
 }
