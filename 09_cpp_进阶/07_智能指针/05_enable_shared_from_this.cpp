@@ -39,7 +39,8 @@ int main()
 	printf("---------------1.错误示例--------------\n");
 	// 错误的示例，每个shared_ptr都认为自己是对象仅有的所有者
 	std::shared_ptr<Bad> bp1(new Bad());
-	std::shared_ptr<Bad> bp2 = bp1->getptr();
+	std::shared_ptr<Bad> bp2 = bp1->getptr();//std::shared_ptr<Bad>(this);
+											 //相当于用同一个指针初始化了两次，会报错（会被析构两次）
 	std::cout << "bp1.use_count() = " << bp1.use_count() << std::endl; //1
 	std::cout << "bp2.use_count() = " << bp2.use_count() << std::endl; //1
 
@@ -49,8 +50,8 @@ int main()
 		std::shared_ptr<Good> gp1(new Good());
 		std::shared_ptr<Good> gp2 = gp1->getptr();
 		// 打印gp1和gp2的引用计数
-		std::cout << "gp1.use_count() = " << gp1.use_count() << std::endl;
-		std::cout << "gp2.use_count() = " << gp2.use_count() << std::endl;
+		std::cout << "gp1.use_count() = " << gp1.use_count() << std::endl;//2
+		std::cout << "gp2.use_count() = " << gp2.use_count() << std::endl;//2
 
 	}
 }

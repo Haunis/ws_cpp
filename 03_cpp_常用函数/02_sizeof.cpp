@@ -1,6 +1,8 @@
 /*
  *  Created on: Mar 15, 2020
  *      Author: haunis
+ * sizeof()不是函数。。。。
+ * 和new ,delete一样，sizeof是c++定义的关键字
  */
 
 #include <stdio.h>

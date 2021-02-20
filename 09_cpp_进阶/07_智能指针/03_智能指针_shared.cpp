@@ -101,7 +101,7 @@ int main(int argc, char *argv[])
 		std::shared_ptr<Person> ptr21{pPerson};
 		printf("ptr1.get()=%#x, ptr21.use_count()=%d\n", ptr21.get(), ptr21.use_count()); //1
 
-		std::shared_ptr<Person> ptr22{pPerson};											  //运行时报错，不可以使用同一个指针初始化，会导致对象被析构两次
+		std::shared_ptr<Person> ptr22{pPerson};  //运行时报错，不可以使用同一个指针初始化，会导致对象被析构两次
 		printf("ptr1.get()=%#x, ptr22.use_count()=%d\n", ptr22.get(), ptr22.use_count()); //1
 	}
 	printf("\n----------------code end----------------\n");
