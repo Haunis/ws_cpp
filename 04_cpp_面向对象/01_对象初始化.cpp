@@ -4,7 +4,7 @@
  * 	主要演示类的成员变量可以初始化哪些类型的变量
  * 
  *	类的成员变量可以初始化：
- *		基本类型，string，无参构造的对象
+ *		基本类型，数组,string，无参构造的对象
  *		必须要初始化静态常量const static int MY_COUNT = 111
  *
  *	不可以初始化:
@@ -55,6 +55,7 @@ public:
 	// static int static_count = 100;//error; 不能为静态成员初始化,必须在类的外部定义或者初始化后方可使用
 	static int static_count; //可以声明;
 
+	int favour[4] = {1, 2, 3}; //ok;可以初始化数组
 public:
 	Person() //实例化时必须要有该无参构造
 	{
@@ -86,6 +87,9 @@ int main()
 	printf("p1 : %s\n", p1.toString().data());
 	printf("static_count = %d\n", Person::static_count);
 
+	cout << "favour[0]:" << p1.favour[0] << endl;
+	cout << "favour[1]:" << p1.favour[1] << endl;
+	cout << "favour[2]:" << p1.favour[2] << endl;
 	printf("\n----------------1.2 使用无参构造实例化对象-----------------\n");
 	Person p2("lee2", 18);
 	printf("p2 : %s\n", p2.toString().data());

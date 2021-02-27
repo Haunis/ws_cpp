@@ -31,7 +31,6 @@ using namespace std;
 
 int main()
 {
-
 	printf("\n---------------1.1 string转char*----------------------------\n");
 	string ss = "hello";
 	//	const char *char_p = ss.data();
@@ -44,7 +43,8 @@ int main()
 	printf("\n---------------1.2 string转int: stringstream(ss)>>int---------------------\n");
 	string ss12 = "3";
 	int ret12;
-	stringstream(ss12) >> ret12;
+	// stringstream(ss12) >> ret12;
+	ret12 = std::stoi(ss12);
 	printf("ret12 = %d\n", ret12);
 
 	printf("\n---------------2.char[] 转string---------------------\n");
