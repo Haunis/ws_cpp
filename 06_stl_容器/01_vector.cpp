@@ -39,25 +39,32 @@ int main()
 {
 	// vector<int> intVec;//ok
 	vector<int> intVec = {1, 2, 3};
+	
 	printVec(intVec);
 
 	printf("---------------1.获取某个元素-------------------\n");
+	
 	int value = intVec[0];
 	printf("intVec[0]=%d\n", intVec[0]);
 
-	printf("---------------2.push_back:尾部插入元素-------------------\n");
+	printf("---------------2.更改-------------------\n");
+	intVec[0] = 18; //可以赋值成功
+	// intVec[3] = 19;//赋值失败，只能对已有索引赋值
+	printVec(intVec);
+
+	printf("---------------3.push_back:尾部插入元素-------------------\n");
 	intVec.push_back(4); //向尾部添加
 	printVec(intVec);
 
-	printf("---------------3.insert:指定位置插入元素-------------------\n");
+	printf("---------------4.insert:指定位置插入元素-------------------\n");
 	intVec.insert(intVec.begin() + 1, 222);
 	printVec(intVec);
 
-	printf("---------------4.erase:删除指定位置元素-------------------\n");
+	printf("---------------5.erase:删除指定位置元素-------------------\n");
 	intVec.erase(intVec.begin() + 1);
 	printVec(intVec);
 
-	printf("---------------5.front:返回第一个元素引用-------------------\n");
+	printf("---------------6.front:返回第一个元素引用-------------------\n");
 	// int front = intVec.front();//ok;但不是常规用法
 	int &front = intVec.front(); //返回第一个元素的引用;改变front的值会更改intVec中的值
 	front = front * 2;
