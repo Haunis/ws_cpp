@@ -27,7 +27,7 @@ public:
 public:
 	Student() : age(20), name("lee") //初始化 age,name
 	{
-		printf("Student 无参构造调用\n");
+		printf("Student 无参构造调用 %#x\n", this);
 	};
 	Student(string name, int age)
 	{
@@ -72,6 +72,11 @@ public:
 		this->name = name;
 		this->age = age;
 	}
+	Person(Student *p)
+	{
+		printf("person 参数为指针构造 ，p=%#x\n", p);
+	}
+
 	string toString()
 	{
 		return name + " , " + to_string(age) + ", stu[ " + stu.toString() + "]";
@@ -99,6 +104,10 @@ int main()
 	Person *pPerson = new Person("lee2", 17);
 	printf("pPerson : %s\n", pPerson->toString().data());
 	delete pPerson;
+
+	printf("\n----------------3.构造参数为指针-----------------\n");
+	// Person p(new Student);	//ok
+	Person p = new Student; //这种写法也行，实际调用的是Person构造函数
 
 	return 0;
 }

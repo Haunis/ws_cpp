@@ -75,7 +75,8 @@ public:
 
 int main()
 {
-	AutoPtr<Person> ap1(new Person);
+	// AutoPtr<Person> ap1(new Person);
+	AutoPtr<Person> ap1 = new Person;//这样也行
 	AutoPtr<Person> ap2(ap1); //默认调用AutoPtr复制构造函数，会和ap1.m_ptr指向同一个Person,所以Person会被析构两次
 	printf("ap1.m_ptr=%#x\n", ap1.m_ptr);
 	printf("ap2.m_ptr=%#x\n", ap2.m_ptr); //ap1和ap2的m_ptr指向同一个Persons

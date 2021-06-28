@@ -28,7 +28,7 @@ public:
 class Son : public Father
 {
 public:
-	Son(string str) //调用父类指定的构造
+	Son(string str) //默认调用父类无参构造
 	{
 		printf("Son 有参构造调用  \n");
 	}
