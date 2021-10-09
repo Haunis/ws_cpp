@@ -5,6 +5,9 @@
 * 	static有两种用法：面向过程的static和面向对象的static,本demo是面向对象的static
  * 		https://blog.csdn.net/legend_hua/article/details/78193239
  * 
+ * const静态类成员可以直接初始化，其他非const的静态类成员需要在类外全局作用域下初始化，且不能使用static关键字
+ * https://blog.csdn.net/qq_43915356/article/details/107368218
+ * 
  * 静态成员是“类级别”的，也就是它和类的地位等同，而普通成员是“对象（实例）级别”的。    
  * 类级别的成员，先于该类任何对象的存在而存在，它被该类所有的对象共享
  * 
@@ -32,6 +35,8 @@ class Student
 public:
 	int x, y, z, aa;
 	static int staticCount; //静态变量，也称类变量；不依赖具体的对象，和java里静态一个意思;不能为静态成员初始化
+	const static int TEMP_STATIC = 100;//const修饰的是ok的
+
 public:
 	Student();	//构造函数，函数体在别的地方实现
 	~Student(); //析构函数，object被释放时调用
@@ -52,11 +57,14 @@ Student::~Student()
 	staticCount--;
 }
 // int Student::staticCount; //ok;定义
-int Student::staticCount = 0; //初始化
+// int Student::staticCount = 10; //初始化
+int Student::staticCount(10); //这样也是可以初始化
+
 int main()
 {
 	printf("----------------1.调用静态成员变量----------------------\n");
 	cout << "staticCount : " << Student::staticCount << endl;
+	cout << "TEMP_STATIC : " << Student::TEMP_STATIC << endl;
 
 	printf("\n--------------2.调用静态函数----------------------\n");
 	Student::staticFun(); //调用静态函数

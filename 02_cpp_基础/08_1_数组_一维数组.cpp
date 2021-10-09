@@ -12,7 +12,12 @@
  *	可以将数组赋值给一个指针
  *  如： int arr1[] = {1, 2, 3}; 
  * 		int *arr_p1 = arr1; 
- * 但不允许这样使用： int *arr_p = {1,2,3}; 
+ * 但不允许这样使用： int *arr_p = {1,2,3};
+ * 
+ * 
+ * 数组必须初始化，其指向的内容未知
+ * memset(p,0,size): memset只可以将数组初始化为0或-1
+ * https://www.cnblogs.com/yhlboke-1992/p/9292877.html 
  * 
  *	https://zhidao.baidu.com/question/166983415.html
  */
@@ -20,6 +25,7 @@
 #include <string>
 #include <stdio.h>
 #include <typeinfo>
+#include <string.h>
 
 #define WIDTH 4
 #define HEIGHT 5
@@ -55,7 +61,13 @@ int main()
 	printArray(arr2, 5);
 
 	printf("\n--------------------3.方式3初始化------------------------\n");
-	int arr3[5]; //数组中每个元素初始化为0
+	int arr3[5]; //数组里的元素未初始化
+	printArray(arr3, 5);
+
+	memset(arr3, 0, sizeof(arr3)); //头文件： string.h
+
+	printf("\n初始化后: \n");
+	printArray(arr3, 5);
 }
 
 //当数组作为函数的参数进行传递时，该数组自动退化为同类型的指针。

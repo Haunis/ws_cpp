@@ -57,6 +57,9 @@ int main()
 	string str_count = std::to_string(count);
 	printf("str_count = %s\n", str_count.data());
 
+	str_count = 9 + '0';	   //单个数字转换成string
+	cout << str_count << endl; //9
+
 	printf("\n---------------4.char[]转int: atoi(char[])----------------------------\n");
 	char c_num[4] = "10";
 	int i_num = atoi(c_num);
@@ -78,4 +81,14 @@ int main()
 	char char_p52[5];
 	sprintf(char_p52, "%d", a52);
 	printf("char_p52=%s\n", char_p52);
+
+	printf("\n---------------6. char 转string----------------------------\n");
+	char c = '1';
+	string ret = "";
+	
+	ret = c;//这个也ok??
+	ret += c;
+	cout << ret << endl;
+
+	cout << string(1, c) << endl;
 }

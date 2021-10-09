@@ -29,14 +29,5 @@ int main(int argc, char *argv[])
     cout << "-------------4.islower()------------" << endl;
     cout << islower('a') << endl; // 非0
     cout << isupper('a') << endl; // 0
-
-    cout << "-------------5.substr------------" << endl;
-    //substr(size_type __pos = 0, size_type __n = npos),第二个参数表示长度
-    //注意和Java里substring(beginIndex,endIndex)参数含义不一样
-    cout<<s.substr(1,2)<<endl; 
-
-    cout << "-------------6.比较string------------" << endl;
-    string temp = "hello"; //比较两个string直接用 "=="即可
-    cout << (s==temp) << endl;
     return -1;
 }
