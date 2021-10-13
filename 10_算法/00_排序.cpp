@@ -113,6 +113,71 @@ void heapSort(vector<int> &nums)
     }
 }
 
+//归并排序
+vector<int> mergeSort(vector<int> &nums, int start, int end)
+{
+    if (start == end)
+        return {nums[start]};
+
+    vector<int> left, right, ret;
+    int mid = start + (end - start) / 2;
+    left = mergeSort(nums, start, mid);
+    right = mergeSort(nums, mid + 1, end);
+
+    int i = 0, j = 0;
+    while (i < left.size() && j < right.size())
+    {
+        if (left[i] <= right[j])
+        {
+            ret.push_back(left[i++]);
+        }
+        else
+        {
+            ret.push_back(right[j++]);
+        }
+    }
+    while (i < left.size())
+        ret.push_back(left[i++]);
+    while (j < right.size())
+        ret.push_back(right[j++]);
+
+    return ret;
+}
+
+//归并排序
+vector<int> mergeSort2(vector<int> nums)
+{
+    if (nums.size() == 1)
+        return nums;
+    vector<int> left, right;
+    int mid = nums.size() / 2;
+    left.assign(nums.begin(), nums.begin() + mid);
+    right.assign(nums.begin() + mid, nums.end());
+
+    left = mergeSort2(left);
+    right = mergeSort2(right);
+
+    vector<int> ret;
+    int i = 0, j = 0;
+    while (i < left.size() && j < right.size())
+    {
+        if (left[i] < right[j])
+        {
+            ret.push_back(left[i++]);
+        }
+        else
+        {
+            ret.push_back(right[j++]);
+        }
+    }
+    while (i < left.size())
+        ret.push_back(left[i++]);
+    while (j < right.size())
+        ret.push_back(right[j++]);
+
+    return ret;
+}
+
 int main(int arg, char *argv[])
 {
     vector<int> nums = {4, 2, 3, 1, 18, 9};
@@ -124,12 +189,14 @@ int main(int arg, char *argv[])
     int64_t start = getMilliSecond();
     // quickSort(nums, 0, nums.size() - 1);
     // shellSort(nums);
-    heapSort(nums);
+    // heapSort(nums);
+    nums = mergeSort(nums, 0, nums.size() - 1);
+    // nums = mergeSort2(nums);
 
     printVec(nums);
 
     int64_t end = getMilliSecond();
     cout << endl;
-    cout << "time: " << float(end - start) / 1000 << endl;
+    cout << "time: " << float(end - start) / 1000 << " s" << endl;
     return -1;
 }
