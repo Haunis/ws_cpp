@@ -16,7 +16,10 @@
  *      虚表指针式在对象的前4个字节里面。那么当对象被销毁时，其虚表指针就被销毁，虚函数自然是无从引用了。
  * 
  */
-#include <stdio.h>
+#include<stdio.h>
+#include<iostream>
+using namespace std;
+
 class Person
 {
 public:
@@ -35,15 +38,29 @@ public:
     {
         printf("funcVirtual ...\n");
     }
+
+    ~Person(){
+        cout<<"析构函数 this="<<this<<endl;
+    }
 };
 int main(int argc, char *argv[])
 {
     Person *p = new Person(28);
-    delete p;
+    Person *temp = p;
+
+    cout<<"删除前 p = "<<p<<endl;
+    cout<<"删除前 temp = "<<temp<<endl;
+    delete temp; //实体对象会被释放
+    cout<<"删除后 temp = "<<temp<<endl;
+    cout<<"删除后 p = "<<p<<endl;
+
+    // delete p; //error;  double free detected in tcache 2
     p = nullptr;
     p->func();
     // p->funcVirtual();//error,crash
     // int temp = p->age;//crash
+
+    cout<<"\n赋值nullptr后， p = "<<p<<endl;
 
     return 0;
 }

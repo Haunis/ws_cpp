@@ -49,7 +49,7 @@ public:
 	const static int MY_COUNT = 100; //常量，必须要初始化
 
 	Student stu;	//ok;可以初始化无参构造对象；会调用默认构造创建对象
-	Student *stu_p; //ok;不会调用构造,不会创建对象
+	Student *stu_p = nullptr; //ok;不会调用构造,不会创建对象; 注意要初始化为nullptr
 	// Student stu2("Twang", 18); //error;类内的对象不能显式调用非默认构造函数
 
 	// static int static_count = 100;//error; 不能为静态成员初始化,必须在类的外部定义或者初始化后方可使用
@@ -102,7 +102,8 @@ int main()
 	printf("\n----------------2.new-----------------\n");
 	// Person *pPeson = new Person;//ok; 使用默认的构造
 	Person *pPerson = new Person("lee2", 17);
-	printf("pPerson : %s\n", pPerson->toString().data());
+	cout << "toString: " << pPerson->toString().data() << endl;
+	cout<<"stu_p : "<<pPerson->stu_p<<endl; //有可能不为0
 	delete pPerson;
 
 	printf("\n----------------3.构造参数为指针-----------------\n");

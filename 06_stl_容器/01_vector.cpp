@@ -50,6 +50,7 @@ int main()
 {
 	// vector<int> intVec;//ok
 	// vector<int> intVec(3);//ok; 初始化三个元素，三个元素均为0
+	// vector<int> intVec(3,-1);//ok; 初始化三个元素，三个元素均为-1
 	vector<int> intVec = {1, 2, 3};
 
 	printVec(intVec);
@@ -72,7 +73,12 @@ int main()
 	intVec.insert(intVec.begin() + 1, 222);
 	printVec(intVec);
 
-	printf("---------------5.查找元素-------------------\n");
+	printf("---------------5.pop_back:尾部弹出一个元素-------------------\n");
+	
+	intVec.pop_back();//无返回值
+	printVec(intVec);
+
+	printf("---------------6.查找元素-------------------\n");
 	std::vector<int>::iterator it = std::find(intVec.begin(), intVec.end(), 222);
 	if (it == intVec.end())
 	{
@@ -84,13 +90,13 @@ int main()
 		printf("222 元素索引:%d\n", index);
 	}
 
-	printf("---------------6.erase:删除指定位置元素-------------------\n");
+	printf("---------------7.erase:删除指定位置元素-------------------\n");
 	printVec(intVec);
 	printf("删除之后\n");
 	intVec.erase(intVec.begin() + 1); //删除第二个元素
 	printVec(intVec);
 
-	printf("---------------7.front:返回第一个元素引用-------------------\n");
+	printf("---------------8.front:返回第一个元素引用-------------------\n");
 	// int front = intVec.front();//ok;但不是常规用法
 	int &front = intVec.front(); //返回第一个元素的引用;改变front的值会更改intVec中的值
 	front = front * 2;
@@ -99,7 +105,7 @@ int main()
 	int size = intVec.size();
 	intVec.clear();
 
-	printf("---------------8.assign:赋值-------------------\n");
+	printf("---------------9.assign:赋值-------------------\n");
 	intVec.push_back(1000);
 	cout << "assign前：" << endl;
 	printVec(intVec);
