@@ -51,9 +51,13 @@ int main()
 	// vector<int> intVec;//ok
 	// vector<int> intVec(3);//ok; 初始化三个元素，三个元素均为0
 	// vector<int> intVec(3,-1);//ok; 初始化三个元素，三个元素均为-1
+	// vector<int> intVec(vector<int>);//ok
 	vector<int> intVec = {1, 2, 3};
 
 	printVec(intVec);
+
+	vector<int> v2(intVec);
+	printVec(v2);
 
 	printf("---------------1.获取某个元素-------------------\n");
 
@@ -74,8 +78,8 @@ int main()
 	printVec(intVec);
 
 	printf("---------------5.pop_back:尾部弹出一个元素-------------------\n");
-	
-	intVec.pop_back();//无返回值
+
+	intVec.pop_back(); //无返回值
 	printVec(intVec);
 
 	printf("---------------6.查找元素-------------------\n");
@@ -111,18 +115,20 @@ int main()
 	printVec(intVec);
 
 	vector<int> temp = {11, 22, 33};
-	intVec.assign(temp.begin(),temp.end());//将temp所有元素全部赋值给intVec
+	intVec.assign(temp.begin(), temp.end()); //将temp所有元素全部赋值给intVec
 	cout << "\nassign后：" << endl;
 	printVec(intVec);
 
 	printf("---------------9.遍历-------------------\n");
 	// for(int item: intVec){
-	for(auto item: intVec){
-		cout<<item<<endl;
+	for (auto item : intVec)
+	{
+		cout << item << endl;
 	}
-	cout<<endl;
-	for(int i = 0;i < intVec.size(); i++){
-		cout<<intVec[i]<<endl;
+	cout << endl;
+	for (int i = 0; i < intVec.size(); i++)
+	{
+		cout << intVec[i] << endl;
 	}
 	return 0;
 }
