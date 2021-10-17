@@ -26,9 +26,10 @@ int main(int argc, char *argv[])
 	// srand(time(0));//给随机数提供种子；默认seed=1,使用固定种子的话，每次程序执行生成一样的随机序列
 	for (int i = 0; i < 30; i++)
 	{
-		int a = RANDOM(0, 8);//[0,8)
-		printf("a : %d\n", a);
+		int a = RANDOM(0, 4);//[0,4)
+		printf("%d,", a);
 	}
+	printf("\n");
 	
 	return 0;
 }

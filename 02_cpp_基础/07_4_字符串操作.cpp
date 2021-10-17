@@ -35,7 +35,7 @@ int main()
 	const char *char_p = "hello";
 	// strcpy(char_p, ss.data()); //可以编译通过,但运行时出错; 常量中内容不可修改(char_p指向的一块区域是常量)
 
-	printf("\n-------------------2.1字符串拼接，纯C风格 sprintf-------------------------------------\n");
+	printf("\n-------------------2.1 char[]，纯C风格 sprintf-------------------------------------\n");
 	const char *s = "lee";
 	int s1 = 20;
 	float s2 = 1.2345;
@@ -44,7 +44,7 @@ int main()
 	sprintf(buf, "%s%d%.4f", s, s1, s2);
 	printf("字符串拼接，s=%s,s1=%d,s2=%.4f --> ret=%s\n", s, s1, s2, buf);
 
-	printf("\n-------------------2.2 字符串拼接，c++11 使用--------------------------------------\n");
+	printf("\n-------------------2.2 string拼接，c++11 使用--------------------------------------\n");
 	string str1 = "aaa";
 	string str2 = "bbb";
 	string str3 = std::to_string(10);

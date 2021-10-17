@@ -34,16 +34,21 @@ using namespace std;
 
 int main(int argc, char *argv[])
 {
- 
-  int a = 4;
-  int b = a++; // 4  先赋值，再计算
 
-	a = 4;
-	int c = ++a; // 5 先计算，再赋值
-	cout << "b = a++ : " << b << endl; //4
-  cout << "c = ++a : " << c << endl; //5
+  printf("\n---------------1. a++ 和 ++a----------------------------\n");
+  int a = 1;
+  cout << "a++ : " << a++ << endl; //1; 先赋值再对a进行+1
+  a = 1;
+  cout << "++a : " << ++a << endl; //2 先对a进行+1再赋值
 
-  bool isEqual = 5 == 4; //0 false ,非0 true
-	cout << "5==4 : " << isEqual << endl;
+  printf("\n---------------2.bool----------------------------\n");
+  cout << "1==1 : " << (1 == 1) << endl; //1; 非0即为真
+  cout << "1==2 : " << (1 == 2) << endl; //0; 0即为false
+
+  printf("\n---------------2. 数字转char----------------------------\n");
+  //0~9转char
+  int a5 = 8;
+  char char_a5 = a5 + '0';
+  printf("char_a5 = %c\n", char_a5);
   return 0;
 }

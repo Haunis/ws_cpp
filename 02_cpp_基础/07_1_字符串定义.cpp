@@ -2,7 +2,12 @@
  *  1.string：
  *  	string不是基本数据类型。要引入<string>头文件和std标准明明空间才可以使用
  *
- *	2.char* arg 和char arg1[]区别:
+ * 	2.char* arg
+ * 	
+ * 	3.char arg[]
+ * 
+ * 
+ *	char* arg 和char arg1[]区别:
  *		char* arg = "hello":
  *			arg 指向字符串常量;
  *			常量指针; 可以指向别的地方, 如arg="abcd"可以指向新字符串 "abcd"
