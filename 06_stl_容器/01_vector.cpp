@@ -27,7 +27,7 @@
  * 	查找某个元素位置:
  * 		https://blog.csdn.net/loveC__/article/details/88647624
  * 		std::vector<int>::iterator it = std::find(v.begin(),v.end(),num)
- * 		if(it!=v.end()) int index = std::distance(intVec.begin(), it);
+ * 		if(it!=v.end()) int index = std::distance(nums.begin(), it);
  * 	
  */
 #include <iostream>
@@ -48,87 +48,98 @@ void printVec(vector<int> &vec)
 
 int main()
 {
-	// vector<int> intVec;//ok
-	// vector<int> intVec(3);//ok; 初始化三个元素，三个元素均为0
-	// vector<int> intVec(3,-1);//ok; 初始化三个元素，三个元素均为-1
-	// vector<int> intVec(vector<int>);//ok
-	vector<int> intVec = {1, 2, 3};
+	// vector<int> nums;//ok
+	// vector<int> nums(3);//ok; 初始化三个元素，三个元素均为0
+	// vector<int> nums(3,-1);//ok; 初始化三个元素，三个元素均为-1
+	// vector<int> nums(vector<int>);//ok
+	vector<int> nums = {1, 2, 3};
 
-	printVec(intVec);
+	printVec(nums);
 
-	vector<int> v2(intVec);
+	vector<int> v2(nums);
 	printVec(v2);
 
 	printf("---------------1.获取某个元素-------------------\n");
 
-	int value = intVec[0];
-	printf("intVec[0]=%d\n", intVec[0]);
+	int value = nums[0];
+	printf("nums[0]=%d\n", nums[0]);
 
 	printf("---------------2.更改-------------------\n");
-	intVec[0] = 18; //可以赋值成功
-	// intVec[3] = 19;//赋值失败，只能对已有索引赋值
-	printVec(intVec);
+	nums[0] = 18; //可以赋值成功
+	// nums[3] = 19;//赋值失败，只能对已有索引赋值
+	printVec(nums);
 
 	printf("---------------3.push_back:尾部插入元素-------------------\n");
-	intVec.push_back(4); //向尾部添加
-	printVec(intVec);
+	nums.push_back(4); //向尾部添加
+	printVec(nums);
 
 	printf("---------------4.insert:指定位置插入元素-------------------\n");
-	intVec.insert(intVec.begin() + 1, 222);
-	printVec(intVec);
+	nums.insert(nums.begin(), 222); //在第0个位置插入
+	printVec(nums);
 
 	printf("---------------5.pop_back:尾部弹出一个元素-------------------\n");
 
-	intVec.pop_back(); //无返回值
-	printVec(intVec);
+	nums.pop_back(); //无返回值
+	printVec(nums);
 
 	printf("---------------6.查找元素-------------------\n");
-	std::vector<int>::iterator it = std::find(intVec.begin(), intVec.end(), 222);
-	if (it == intVec.end())
+	std::vector<int>::iterator it = std::find(nums.begin(), nums.end(), 222);
+	if (it == nums.end())
 	{
 		printf("222 无该元素\n");
 	}
 	else
 	{
-		int index = std::distance(intVec.begin(), it);
+		int index = std::distance(nums.begin(), it);
 		printf("222 元素索引:%d\n", index);
 	}
 
 	printf("---------------7.erase:删除指定位置元素-------------------\n");
-	printVec(intVec);
+	printVec(nums);
 	printf("删除之后\n");
-	intVec.erase(intVec.begin() + 1); //删除第二个元素
-	printVec(intVec);
+	nums.erase(nums.begin() + 1); //删除第二个元素
+	printVec(nums);
 
 	printf("---------------8.front:返回第一个元素引用-------------------\n");
-	// int front = intVec.front();//ok;但不是常规用法
-	int &front = intVec.front(); //返回第一个元素的引用;改变front的值会更改intVec中的值
+	// int front = nums.front();//ok;但不是常规用法
+	int &front = nums.front(); //返回第一个元素的引用;改变front的值会更改nums中的值
 	front = front * 2;
-	printVec(intVec);
+	printVec(nums);
 
-	int size = intVec.size();
-	intVec.clear();
+	int size = nums.size();
+	nums.clear();
 
 	printf("---------------9.assign:赋值-------------------\n");
-	intVec.push_back(1000);
+	nums.push_back(1000);
 	cout << "assign前：" << endl;
-	printVec(intVec);
+	printVec(nums);
 
 	vector<int> temp = {11, 22, 33};
-	intVec.assign(temp.begin(), temp.end()); //将temp所有元素全部赋值给intVec
+	nums.assign(temp.begin(), temp.end()); //将temp所有元素全部赋值给intVec
 	cout << "\nassign后：" << endl;
-	printVec(intVec);
+	printVec(nums);
 
 	printf("---------------9.遍历-------------------\n");
-	// for(int item: intVec){
-	for (auto item : intVec)
+	// for(int item: nums){
+	for (auto item : nums)
 	{
 		cout << item << endl;
 	}
 	cout << endl;
-	for (int i = 0; i < intVec.size(); i++)
+	for (int i = 0; i < nums.size(); i++)
 	{
-		cout << intVec[i] << endl;
+		cout << nums[i] << endl;
 	}
+
+	printf("---------------10.排序-------------------\n");
+	cout << "排序前" << endl;
+	nums = {8, 9, 4, 1, 12, 7, 3};
+	printVec(nums);
+
+	sort(nums.begin(), nums.end());
+
+	cout << "排序后" << endl;
+	printVec(nums);
+
 	return 0;
 }
