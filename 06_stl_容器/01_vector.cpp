@@ -28,6 +28,11 @@
  * 		https://blog.csdn.net/loveC__/article/details/88647624
  * 		std::vector<int>::iterator it = std::find(v.begin(),v.end(),num)
  * 		if(it!=v.end()) int index = std::distance(nums.begin(), it);
+ * 
+ *  push_back()和emplace_back()区别：
+ * 		http://c.biancheng.net/view/6826.html
+ * 		push_back():首先会创建这个元素，然后再将这个元素拷贝或者移动到容器中（如果是拷贝的话，事后会自行销毁先前创建的这个元素）
+ * 		emplace_back(): 则是直接在容器尾部创建这个元素，省去了拷贝或移动元素的过程;效率更高
  * 	
  */
 #include <iostream>
@@ -70,7 +75,8 @@ int main()
 	printVec(nums);
 
 	printf("---------------3.push_back:尾部插入元素-------------------\n");
-	nums.push_back(4); //向尾部添加
+	nums.push_back(4);	   //向尾部添加
+	nums.emplace_back(44); //也是向尾部添加元素,c++11新添加的方法
 	printVec(nums);
 
 	printf("---------------4.insert:指定位置插入元素-------------------\n");

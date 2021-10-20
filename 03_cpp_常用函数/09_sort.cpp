@@ -32,20 +32,27 @@ void printArray(int array[], int length)
 
 int main(int argc, char *argv[])
 {
+    cout << "---------------1.对数组进行排序---------------" << endl;
     int arr[] = {4, 8, 12, 7, 1, 4};
     cout << "排序前" << endl;
     printArray(arr, sizeof(arr) / sizeof(int));
     cout << "排序后" << endl;
-    sort(arr, arr + 6);//arr[0]~arr[5]
+    sort(arr, arr + 6); //arr[0]~arr[5]
     printArray(arr, sizeof(arr) / sizeof(int));
 
-    cout<<endl;
-
+    cout << "\n---------------2.对vector进行排序---------------" << endl;
     vector<int> nums = {4, 8, 12, 7, 1, 4};
     cout << "排序前" << endl;
     printVec(nums);
     cout << "排序后" << endl;
     sort(nums.begin(), nums.end());
     printVec(nums);
+
+    cout << "\n---------------3.对string进行排序---------------" << endl;
+    string s = "dacexy";
+    cout << "排序前: " << s << endl;
+    sort(s.begin(), s.end());
+    cout << "排序后: " << s << endl;
+
     return -1;
 }
