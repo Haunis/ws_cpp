@@ -78,6 +78,16 @@ int main()
 	struct Student *stup = &stu2;
 	stup->p_study("stup study English"); //间接引用运算符，访问指针所指向的结构体属性。左边必须是一级指针
 
+	printf("\n-------------2.3实例化方式3:struct Student stu1={}------------------\n");
+	//前面带. 表示这个结构体的，可以乱序赋值
+	struct Student stu23 = { 
+		.age = 18,
+		.name = "lee23",
+		.p_study = 0,
+		.sex = 'm'
+	};
+	printf("stu23.name = %s\n",stu23.name);
+
 	printf("\n-------------3.使用typedef----------------------\n");
 	Person p;		 //使用了typedef后可以不使用struct关键字
 	p.name = "张三"; //p.name是指针,所以可以指向其他地方
