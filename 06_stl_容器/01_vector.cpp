@@ -1,9 +1,18 @@
 /**
- *	https://blog.csdn.net/qq_40803710/article/details/80638386 
+ *	https://blog.csdn.net/qq_40803710/article/details/80638386
  *	https://www.cnblogs.com/love-yh/p/7410666.html
  *
-
- *	初始化:
+ *
+ *	1.原理
+ * 		vector底层数据结构是数组
+ * 		扩容：	空间不足时，申请一个更大的数组，并将原数组内容拷贝至新数组
+ * 		插入：	找到插入位置，将插入位置和后面的元素整体向后移动一位，空出来的位置放入新元素
+ * 		删除：	将要删除的元素后面的所有元素整体向前移动一位
+ * 
+ * 		size:	当前容器内有多少个元素
+ * 		capactity:  指容器在必须分配新存储空间之前可以存储的元素总数，capacity总是大于或等于size的。
+ * 
+ *	2.初始化:
  * 		vector<T> v1;                    //v1为空，执行默认初始化
  *		vector<T> v2(v1);                //v2中包含v1所有元素的副本
  *		vector<T> v2=v1;                //等价于v2(v1)
@@ -12,34 +21,35 @@
  *		vector<T> v5{a,b,c...};         //包含初始化元素个数，每个元素被对应的赋予相应的值
  *		vector<T> v5={a,b,c...};        //等价v5{a,b,c...}
  *
- * 	vector常用方法:
+ * 	3.vector常用方法:
  * 		front():返回第一个元素的引用
  * 		back():返回最后一个元素的引用
  * 		insert(index,value): 指定位置插入元素
  * 		erase(index):删除指定位置元素
  * 		size():大小
  * 		clear():清除所有元素
- * 
- * 	查找某个元素是否存在:
+ *
+ * 	4.查找某个元素是否存在:
  * 		https://blog.csdn.net/guotianqing/article/details/105832070
  * 		std::vector<int>::iterator it = std::find(v.begin(),v.end(),num)
- * 
- * 	查找某个元素位置:
+ *
+ * 	5.查找某个元素位置:
  * 		https://blog.csdn.net/loveC__/article/details/88647624
  * 		std::vector<int>::iterator it = std::find(v.begin(),v.end(),num)
  * 		if(it!=v.end()) int index = std::distance(nums.begin(), it);
- * 
- *  push_back()和emplace_back()区别：
+ *
+ *  6.push_back()和emplace_back()区别：
  * 		http://c.biancheng.net/view/6826.html
  * 		push_back():首先会创建这个元素，然后再将这个元素拷贝或者移动到容器中（如果是拷贝的话，事后会自行销毁先前创建的这个元素）
  * 		emplace_back(): 则是直接在容器尾部创建这个元素，省去了拷贝或移动元素的过程;效率更高
- * 	
+ *
  */
 #include <iostream>
 #include <stdlib.h>
 #include <stdio.h>
 #include <vector>
 #include <algorithm> //std::find()
+#include <typeinfo>
 using namespace std;
 
 void printVec(vector<int> &vec)
@@ -69,26 +79,27 @@ int main()
 	int value = nums[0];
 	printf("nums[0]=%d\n", nums[0]);
 
-	printf("---------------2.更改-------------------\n");
-	nums[0] = 18; //可以赋值成功
+	printf("\n---------------2.更改-------------------\n");
+	nums[0] = 18; // 可以赋值成功
 	// nums[3] = 19;//赋值失败，只能对已有索引赋值
 	printVec(nums);
 
-	printf("---------------3.push_back:尾部插入元素-------------------\n");
-	nums.push_back(4);	   //向尾部添加
-	nums.emplace_back(44); //也是向尾部添加元素,c++11新添加的方法
+	printf("\n---------------3.push_back:尾部插入元素-------------------\n");
+	nums.push_back(4);	   // 向尾部添加
+	nums.emplace_back(44); // 也是向尾部添加元素,c++11新添加的方法
 	printVec(nums);
 
-	printf("---------------4.insert:指定位置插入元素-------------------\n");
-	nums.insert(nums.begin(), 222); //在第0个位置插入
+	printf("\n---------------4.insert:指定位置插入元素-------------------\n");
+	printf("nums.begin()类型 --> %s\n", typeid(nums.begin()).name()); // N9__gnu_cxx17__normal_iteratorIPiSt6vectorIiSaIiEEEE
+	nums.insert(nums.begin() + 2, 222);								  // 在第index=2位置插入
 	printVec(nums);
 
-	printf("---------------5.pop_back:尾部弹出一个元素-------------------\n");
+	printf("\n---------------5.pop_back:尾部弹出一个元素-------------------\n");
 
-	nums.pop_back(); //无返回值
+	nums.pop_back(); // 无返回值; 最后一个元素会被删除
 	printVec(nums);
 
-	printf("---------------6.查找元素-------------------\n");
+	printf("\n---------------6.查找元素-------------------\n");
 	std::vector<int>::iterator it = std::find(nums.begin(), nums.end(), 222);
 	if (it == nums.end())
 	{
@@ -100,32 +111,33 @@ int main()
 		printf("222 元素索引:%d\n", index);
 	}
 
-	printf("---------------7.erase:删除指定位置元素-------------------\n");
+	printf("\n---------------7.erase:删除指定位置元素-------------------\n");
 	printVec(nums);
 	printf("删除之后\n");
-	nums.erase(nums.begin() + 1); //删除第二个元素
+	nums.erase(nums.begin() + 1); // 删除第二个元素
 	printVec(nums);
 
-	printf("---------------8.front:返回第一个元素引用-------------------\n");
+	printf("\n---------------8.front:返回第一个元素引用-------------------\n");
 	// int front = nums.front();//ok;但不是常规用法
-	int &front = nums.front(); //返回第一个元素的引用;改变front的值会更改nums中的值
+	int &front = nums.front(); // 返回第一个元素的引用;改变front的值会更改nums中的值
+	printf("front类型 --> %s\n", typeid(front).name());
 	front = front * 2;
 	printVec(nums);
 
 	int size = nums.size();
 	nums.clear();
 
-	printf("---------------9.assign:赋值-------------------\n");
+	printf("\n---------------9.assign:赋值-------------------\n");
 	nums.push_back(1000);
-	cout << "assign前：" << endl;
+	cout << "assign前: " << endl;
 	printVec(nums);
 
 	vector<int> temp = {11, 22, 33};
-	nums.assign(temp.begin(), temp.end()); //将temp所有元素全部赋值给intVec
-	cout << "\nassign后：" << endl;
+	nums.assign(temp.begin(), temp.end()); // 将temp所有元素全部赋值给intVec
+	cout << "\nassign后: " << endl;
 	printVec(nums);
 
-	printf("---------------9.遍历-------------------\n");
+	printf("\n---------------9.遍历-------------------\n");
 	// for(int item: nums){
 	for (auto item : nums)
 	{
@@ -137,7 +149,7 @@ int main()
 		cout << nums[i] << endl;
 	}
 
-	printf("---------------10.排序-------------------\n");
+	printf("\n---------------10.排序-------------------\n");
 	cout << "排序前" << endl;
 	nums = {8, 9, 4, 1, 12, 7, 3};
 	printVec(nums);
