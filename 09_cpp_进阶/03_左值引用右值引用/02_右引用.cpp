@@ -35,6 +35,7 @@ int main()
 	// fun(r_i2);//error;只能传右值
 
 	printf("before  r_i2 = %d\n", r_i2);
+	// fun(i2); //error; 不可传入左值，但使用模板可以，参考"引用折叠"相关
 	fun(std::move(i2)); //可以理解将i的引用传过去
 	printf("after  r_i2 = %d\n", r_i2);
 	printf("i = %d\n", i2); //i会改变
