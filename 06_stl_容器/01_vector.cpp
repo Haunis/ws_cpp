@@ -5,13 +5,13 @@
  *
  *	1.原理
  * 		vector底层数据结构是数组
- * 		扩容：	空间不足时，申请一个更大的数组，并将原数组内容拷贝至新数组
+ * 		扩容：	空间不足时，申请一个更大的数组(1.5或者2倍)，并将原数组内容拷贝至新数组
  * 		插入：	找到插入位置，将插入位置和后面的元素整体向后移动一位，空出来的位置放入新元素
  * 		删除：	将要删除的元素后面的所有元素整体向前移动一位
- * 
+ *
  * 		size:	当前容器内有多少个元素
  * 		capactity:  指容器在必须分配新存储空间之前可以存储的元素总数，capacity总是大于或等于size的。
- * 
+ *
  *	2.初始化:
  * 		vector<T> v1;                    //v1为空，执行默认初始化
  *		vector<T> v2(v1);                //v2中包含v1所有元素的副本
@@ -26,8 +26,9 @@
  * 		back():返回最后一个元素的引用
  * 		insert(index,value): 指定位置插入元素
  * 		erase(index):删除指定位置元素
- * 		size():大小
- * 		clear():清除所有元素
+ * 		size():容器内元素个数
+ * 		capacity(): 容器大小
+ * 		clear():清除所有元素，但仍然占着内存空间
  *
  * 	4.查找某个元素是否存在:
  * 		https://blog.csdn.net/guotianqing/article/details/105832070
@@ -158,6 +159,26 @@ int main()
 
 	cout << "排序后" << endl;
 	printVec(nums);
+
+	printf("\n---------------11.释放内存-------------------\n");
+	for (int i = 0; i < 50; i++)
+	{
+		nums.push_back(i);
+	}
+	printf("size = %ld\n", nums.size()); //57
+	printf("capacity = %ld\n", nums.capacity()); //112
+
+	printf("\nclear ...\n");
+
+	nums.clear();
+	printf("size = %ld\n", nums.size()); //0
+	printf("capacity = %ld\n", nums.capacity()); //112; 可以看到vector内存未被清空.
+
+	printf("\nclear ...\n");
+
+	vector<int>().swap(nums); //使用一个空vector进行内存交换, nums地址不变。
+	printf("size = %ld\n", nums.size()); //0
+	printf("capacity = %ld\n", nums.capacity()); //0
 
 	return 0;
 }

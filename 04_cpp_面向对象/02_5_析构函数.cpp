@@ -13,35 +13,37 @@
 #include <iostream>
 using namespace std;
 
-class Teacher
+class Bean
 {
 public:
-    int age;
+    int num;
 
 public:
-    Teacher(int age = -1) : age{age}
+    Bean(int num = -1) : num{num}
     {
-        printf("Teacher 构造 age=%d, this = %#x\n", age, this);
+        printf("Bean 构造 num=%d, this = %p\n", num, this);
     }
-    ~Teacher()
+    ~Bean()
     {
-        printf("Teacher 析构.. this = %#x\n", this);
+        printf("Bean 析构.. this = %p\n", this);
     }
 };
 
 class Outer
 {
 public:
-    Teacher t;
-    int age;
+    Bean bean;
+    int num;
+
 public:
-    Outer():age{18}
+    Outer() : num{18}
     {
-        printf("Outer 构造.. this = %#x\n", this);
+        printf("Outer 构造 num=%d, this = %p\n", num, this);
     }
+
     ~Outer()
     {
-        printf("Outer 析构.. this = %#x\n", this);
+        printf("Outer 析构.. this = %p\n", this);
     }
 };
 
@@ -50,29 +52,23 @@ int main()
 
     printf("\n----------------1. 栈区对象-------------------\n");
     {
-        Teacher t(18);
+        Bean bean(18);
     }
     printf("\n----------------2. new 对象-------------------\n");
-    Teacher *tp;
+    Bean *bp;
     {
-        tp = new Teacher(12);
+        bp = new Bean(12);
     }
-    printf(".....\n");
-    delete tp; // 手动执行delete后才调用对象的析构
+    printf("delete bp.....\n");
+    delete bp; // 手动执行delete后才调用对象的析构
 
-    printf("\n----------------3. 成员对象析构比本对象晚 -------------------\n");
+    printf("\n----------------3. 析构顺序： 先本对象，再成员对象-------------------\n");
     {
-        Outer o;     
-        printf("o.age=%d, &o = %#x\n",o.age, &o);   
-        printf("o.t.age=%d, &o.t = %#x\n",o.t.age, &(o.t));  //p和p.t地址是一样的... 
-
-        Outer *op = &o;
-        printf("op->age=%d \n",op->age);  
-
-        // Teacher *tpp = &o.t;
-        Teacher *tpp = (Teacher*)&o; //强转成Teacher指针也行，地址都一样...
-        printf("tpp->age=%d \n",tpp->age);  
+        Outer o;
+        printf("\no.num=%d, &o = %p\n", o.num, &o);
+        printf("o.bean.num=%d, &o.bean = %p\n\n", o.bean.num, &(o.bean));
     }
+
     printf("\n----------------code end-------------------\n");
 
     return 0;

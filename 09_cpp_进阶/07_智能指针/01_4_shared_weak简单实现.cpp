@@ -32,7 +32,7 @@ class WeakPtr; // 为了用weak_ptr的lock()，来生成share_ptr用，需要拷
 
 //------------------------------------SharedPtr------------------------------------
 template <class T>
-class SharePtr
+class SharedPtr
 {
 public:
     T *m_ptr;           // 要管理的对象的指针
@@ -41,36 +41,36 @@ public:
 public:
     friend class WeakPtr<T>; // 方便weak_ptr与share_ptr设置引用计数和赋值
 
-    SharePtr(T *p = 0) : m_ptr(p)
+    SharedPtr(T *p = 0) : m_ptr(p)
     {
         p_counter = new Counter();
         if (p)
             p_counter->shared_count = 1;
-        cout << "SharePtr 指针构造，this=" << this << ",p_counter->shared_count: " << p_counter->shared_count << endl;
+        cout << "SharedPtr 指针构造，this=" << this << ",p_counter->shared_count: " << p_counter->shared_count << endl;
     }
 
-    SharePtr(SharePtr<T> const &other) // 复制构造
+    SharedPtr(SharedPtr<T> const &other) // 复制构造
     {
         m_ptr = other.m_ptr;
         (other.p_counter)->shared_count++;
-        cout << "SharePtr 拷贝构造,this=" << this << ",other_shared_count=" << (other.p_counter)->shared_count << endl;
+        cout << "SharedPtr 拷贝构造,this=" << this << ",other_shared_count=" << (other.p_counter)->shared_count << endl;
         p_counter = other.p_counter;
     }
-    SharePtr(WeakPtr<T> const &weakPtr) // weak_ptr的lock()生成share_ptr用
+    SharedPtr(WeakPtr<T> const &weakPtr) // weak_ptr的lock()生成share_ptr用
     {
         m_ptr = weakPtr.m_ptr;
         (weakPtr.p_counter)->shared_count++;
-        cout << "SharePtr WeakPtr构造，this=" << this << ",weakPtr_shared_count= " << (weakPtr.p_counter)->shared_count << endl;
+        cout << "SharedPtr WeakPtr构造，this=" << this << ",weakPtr_shared_count= " << (weakPtr.p_counter)->shared_count << endl;
         p_counter = weakPtr.p_counter;
     }
-    SharePtr<T> &operator=(SharePtr<T> &shared_ptr)
+    SharedPtr<T> &operator=(SharedPtr<T> &shared_ptr)
     {
-        printf("SharePtr 赋值运算符,this=%p,other=%p\n", this, &shared_ptr);
+        printf("SharedPtr 赋值运算符,this=%p,other=%p\n", this, &shared_ptr);
         if (this != &shared_ptr)
         {
             release(); // 将对m_ptr的引用计数减1
             (shared_ptr.p_counter)->shared_count++;
-            printf("SharePtr 赋值运算符， s_c=%d\n\n", (shared_ptr.p_counter)->shared_count);
+            printf("SharedPtr 赋值运算符， s_c=%d\n\n", (shared_ptr.p_counter)->shared_count);
             p_counter = shared_ptr.p_counter;
             m_ptr = shared_ptr.m_ptr;
         }
@@ -85,7 +85,7 @@ public:
     {
         return m_ptr;
     }
-    ~SharePtr()
+    ~SharedPtr()
     {
         printf("\nSharePtr 析构...%p\n", this);
         release();
@@ -97,7 +97,7 @@ protected:
         p_counter->shared_count--;
         int s_c = p_counter->shared_count;
         int w_c = p_counter->weak_count;
-        cout << "SharePtr release...s_c=" << s_c << ",w_c=" << w_c << " p_counter:"<<p_counter<<endl;
+        cout << "SharedPtr release...s_c=" << s_c << ",w_c=" << w_c << " p_counter:"<<p_counter<<endl;
         if (p_counter->shared_count < 1)
         {
             delete m_ptr;                  // 会调用对象的析构函数
@@ -119,7 +119,7 @@ private:
     Counter *p_counter;
 
 public:
-    friend class SharePtr<T>; // 方便weak_ptr与share_ptr设置引用计数和赋值
+    friend class SharedPtr<T>; // 方便weak_ptr与share_ptr设置引用计数和赋值
 
     WeakPtr() // 给出默认构造和拷贝构造，其中拷贝构造不能有从原始指针进行构造
     {
@@ -127,7 +127,7 @@ public:
         m_ptr = 0;
         p_counter = 0;
     }
-    WeakPtr(SharePtr<T> &shared_count) : m_ptr(shared_count.m_ptr), p_counter(shared_count.p_counter)
+    WeakPtr(SharedPtr<T> &shared_count) : m_ptr(shared_count.m_ptr), p_counter(shared_count.p_counter)
     {
         cout << "weakPtr SharedPtr构造,this=" << this << endl;
         p_counter->weak_count++;
@@ -149,7 +149,7 @@ public:
         }
         return *this;
     }
-    WeakPtr<T> &operator=(SharePtr<T> &sharedPtr)//本demo走这个地方
+    WeakPtr<T> &operator=(SharedPtr<T> &sharedPtr)//本demo走这个地方
     {
         printf("weakPtr 赋值运算(sharedPtr), this=%p, &sharedPtr=%p\n", this, &sharedPtr);
         release();
@@ -159,10 +159,10 @@ public:
         m_ptr = sharedPtr.m_ptr;
         return *this;
     }
-    SharePtr<T> lock()
+    SharedPtr<T> lock()
     {
         printf("WeakPtr lock..\n");
-        return SharePtr<T>(*this);
+        return SharedPtr<T>(*this);
     }
     bool expired()
     {
@@ -205,7 +205,7 @@ class Person
 public:
     string name;
     // std::shared_ptr<Person> m_partner;//会增加shared_ptr引用计数，导致循环引用，Person最后不会被析构
-    // SharePtr<Person> m_partner; // 会增加SharePtr引用计数，导致SharePtr析构时不能调用delete m_ptr
+    // SharedPtr<Person> m_partner; // 会增加SharePtr引用计数，导致SharePtr析构时不能调用delete m_ptr
     //  因此导致Person最后不会被析构
     WeakPtr<Person> m_partner; // 不会增加SharePtr引用计数; 调用WeakPtr.lock()可获取SharePtr；
     //                             // Person析构后，m_partner才会析构
@@ -221,7 +221,7 @@ public:
         printf("Person 析构 --> name=%s, this=%p\n", name.data(), this);
     }
 
-    friend bool partnerUp(SharePtr<Person> &p1, SharePtr<Person> &p2)
+    friend bool partnerUp(SharedPtr<Person> &p1, SharedPtr<Person> &p2)
     {
         string split = "===============\n";
         cout << "\nPerson partnerUp start " + split << endl;
@@ -244,8 +244,8 @@ int main()
     {
         Person *pPerson1 = new Person("lee1");
         Person *pPerson2 = new Person("lee2");
-        SharePtr<Person> p1(pPerson1);
-        SharePtr<Person> p2(pPerson2);
+        SharedPtr<Person> p1(pPerson1);
+        SharedPtr<Person> p2(pPerson2);
         partnerUp(p1, p2); // 互相设为伙伴
 
         string p1_partner_name = p1->m_partner.lock()->name; // m_partner为WeakPtr时
