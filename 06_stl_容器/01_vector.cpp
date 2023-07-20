@@ -26,9 +26,11 @@
  * 		back():返回最后一个元素的引用
  * 		insert(index,value): 指定位置插入元素
  * 		erase(index):删除指定位置元素
- * 		size():容器内元素个数
+ * 		size():返回容器内元素个数
  * 		capacity(): 容器大小
  * 		clear():清除所有元素，但仍然占着内存空间
+ * 		reserve(n): 扩容； 已有容量小于n则扩容，大于n无动作
+ * 		resize(n):	更改容器内元素个数，已有个数小于n则增加元素，新增加的用0填充；已有个数大于n则删除多余的
  *
  * 	4.查找某个元素是否存在:
  * 		https://blog.csdn.net/guotianqing/article/details/105832070
@@ -142,13 +144,14 @@ int main()
 	// for(int item: nums){
 	for (auto item : nums)
 	{
-		cout << item << endl;
+		cout << item << " ";
 	}
 	cout << endl;
 	for (int i = 0; i < nums.size(); i++)
 	{
-		cout << nums[i] << endl;
+		cout << nums[i] << " ";
 	}
+	cout << endl;
 
 	printf("\n---------------10.排序-------------------\n");
 	cout << "排序前" << endl;
@@ -160,25 +163,38 @@ int main()
 	cout << "排序后" << endl;
 	printVec(nums);
 
-	printf("\n---------------11.释放内存-------------------\n");
+	printf("\n---------------11.扩容:reserve-------------------\n");
+	printf("size=%ld, capacity=%ld\n", nums.size(), nums.capacity()); // 7,7
+
+	// nums.reserve(3);// 参数小于capacity，无操作
+	nums.reserve(nums.capacity() + 20); // 参数大于capacity，扩容
+
+	printf("size=%ld, capacity=%ld\n", nums.size(), nums.capacity()); // 7,27
+
+	printf("\n---------------12.更改容器内元素数量： resize-------------------\n");
+	printf("size=%ld, capacity=%ld\n", nums.size(), nums.capacity()); // 7,27
+
+	printVec(nums);
+	// nums.resize(nums.size() - 2); //减少2个元素
+	nums.resize(nums.size() + 2); // 增加2个元素，新元素用0填充，若元素个数超出capacity则capacity自动扩容
+	printVec(nums);
+
+	printf("size=%ld, capacity=%ld\n", nums.size(), nums.capacity()); // 9,27
+
+	printf("\n---------------13.释放内存-------------------\n");
 	for (int i = 0; i < 50; i++)
 	{
 		nums.push_back(i);
 	}
-	printf("size = %ld\n", nums.size()); //57
-	printf("capacity = %ld\n", nums.capacity()); //112
+	printf("size=%ld, capacity=%ld\n", nums.size(), nums.capacity()); // 57, 112
 
 	printf("\nclear ...\n");
-
 	nums.clear();
-	printf("size = %ld\n", nums.size()); //0
-	printf("capacity = %ld\n", nums.capacity()); //112; 可以看到vector内存未被清空.
+	printf("size=%ld, capacity=%ld\n", nums.size(), nums.capacity()); // 0, 112; vector内存未被清空.
 
-	printf("\nclear ...\n");
-
-	vector<int>().swap(nums); //使用一个空vector进行内存交换, nums地址不变。
-	printf("size = %ld\n", nums.size()); //0
-	printf("capacity = %ld\n", nums.capacity()); //0
+	printf("\nswap ...\n");
+	vector<int>().swap(nums);										  // 使用一个空vector进行内存交换, nums地址不变。
+	printf("size=%ld, capacity=%ld\n", nums.size(), nums.capacity()); // 0,0
 
 	return 0;
 }
