@@ -23,7 +23,7 @@
  */
 #include <iostream>
 #include <stdio.h>
-#include <string.h>
+#include <string.h> //strlen
 
 using namespace std;
 
