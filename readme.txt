@@ -30,3 +30,12 @@ vscode智能提示使用c++11:
     c.重启
     d.【右键本Project】->Index->Rebuild
 	2019的eclipse有bug，build完之后，刷新一下目录里的binary才显示出来，然后才可以run
+
+
+.vscode:
+	https://code.visualstudio.com/docs/cpp/config-linux
+	https://zhuanlan.zhihu.com/p/92175757
+	tasks.json:
+		编译代码配置，包括编译工具gcc/g++，生成elf文件路径
+	launch.json:
+		debug和运行设置

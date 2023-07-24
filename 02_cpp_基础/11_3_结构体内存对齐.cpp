@@ -4,17 +4,17 @@
  *  参考：
  *      https://blog.csdn.net/m0_60274660/article/details/120796889
  *      https://blog.csdn.net/weixin_48896613/article/details/127371045
- * 
+ *
  *  为何要内存对齐？
  *      为了提高cpu对内存的访问效率。
  *      32位系统cpu一次寻址4个字节，64位系统一次寻址8个字节。
  *      如果不对齐，对于64位系统来说，cpu读取的数据(8bytes)可能分布在两个存储地址，这样cpu就要读取两次，影响效率
- * 
+ *
  *  对齐系数：每个特定平台上的编译器都有自己的默认“对齐系数”（也叫对齐模数）。
  *          32位系统，gcc中默认#pragma pack(4)，64位系统默认：#pragma pack(8)
  *      作用：即系统要求每一个数据最小占用多少内存
- *        
- * 
+ *
+ *
  *  对齐原则
  *      第一条规则：各成员的内存空间的首地址必须是对齐系数和数据类型本身大小较小者的整数倍，(即必须是有效对齐值的整数倍)
  *                如果是数组，需要根据数据类型大小，而不是总数组所占字节。
@@ -24,6 +24,7 @@
  */
 
 #include <stdio.h>
+#include "memory_dump.h" //查看内存
 
 struct S1
 {
@@ -93,11 +94,27 @@ struct S3
     short e;
 };
 
+int g_a = 100;
+
 int main()
 {
-    printf("S1: %ld\n", sizeof(S1)); // 16
-    printf("S2: %ld\n", sizeof(S2)); // 24
-    printf("S3: %ld\n", sizeof(S3)); // 48
+    printf("S1 size: %ld\n", sizeof(S1)); // 16
+    printf("S2 size: %ld\n", sizeof(S2)); // 24
+    printf("S3 size: %ld\n", sizeof(S3)); // 48
+
+    // debug后，监视窗口填入 memory_dump(sp, len, $rsp, $rbp)
+    S1 s1 = {.i = 1, .j = 2, .a = 3, .b = 5};
+
+    int len = (int)sizeof(s1);
+    S1 *sp = &s1;
+
+    printf("main..sp=%p\n", sp);
+    
+
+    sp->i = 10;
+
+    printf("s1.i=%d, len=%d\n", sp->i, len);
+    printf("&g_a=%p\n", &g_a);
 
     return 0;
 }
