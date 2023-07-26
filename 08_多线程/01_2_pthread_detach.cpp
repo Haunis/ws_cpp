@@ -48,6 +48,7 @@
 #include <pthread.h>
 #include <unistd.h>
 #include <cstdlib>
+#include <errno.h>
 using namespace std;
 
 #define NUM_THREAD 5
@@ -59,7 +60,7 @@ void *func(void *arg)
 
 	long long_arg = *((int *)arg);	//转换成int*指针后再取值
 	usleep(long_arg * 1000 * 1000); //第一个线程等1s,第二个2s...
-	printf("func long_arg :%d\n", long_arg);
+	printf("func long_arg :%ld\n", long_arg);
 	//	pthread_exit(NULL);
 	*((int *)arg) = *((int *)arg) * 10; //里面存的值乘以10
 	pthread_exit(arg);					//可以返回arg给所join该线程的线程
@@ -82,7 +83,8 @@ int main()
 		if (ret != 0) //线程创建成功返回0
 		{
 			cout << "Error:unable to create thread : " << ret << endl;
-			exit(-1); //需要导入cstdlib
+			// exit(-1); //需要导入cstdlib
+			exit(errno);
 		}
 	}
 
@@ -104,7 +106,7 @@ int main()
 			cout << "Error:unable to join," << ret << endl;
 			exit(-1);
 		}
-		printf("main join thread_id=%d, *status=%d\n", thread_id[i], *((int *)status));
+		printf("main join thread_id=%lu, *status=%d\n", thread_id[i], *((int *)status));
 	}
 
 	cout << "main: program exit" << endl;
