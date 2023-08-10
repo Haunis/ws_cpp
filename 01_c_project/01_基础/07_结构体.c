@@ -13,6 +13,11 @@
  *			structName.funP = fun();
  *		3.间接引用运算符，访问指针所指向的结构体属性。左边必须是一级指针
  *
+ * 	结构体里的变量不可以初始化：
+ * 		https://blog.csdn.net/deniece1/article/details/100593784
+ * 		因为定义结构体时，并未给其分配内存，所以初值是无法存储的。
+ * 		应该声明结构体变量后，手工赋值。
+ *
  *	结构体变量前加点:
  *		赋值时可以乱序,但c++不支持这种语法,c++必须保证顺序一致
  *		c可以乱序: https://bbs.csdn.net/topics/380157282
@@ -35,6 +40,7 @@ struct Student
 {
 	char *name;
 	int age;
+	// char sex = 'f'; //error; 不能初始化
 	char sex;
 
 	// void (*p_study)() = study; //error;C不允许这样直接给函数指针赋值
@@ -49,21 +55,21 @@ int main()
 {
 	printf("-------------1.使用初始实例化的结构体--------------------\n");
 	student.name = "lee0";
-	printf("student.name=%s\n",student.name);
+	printf("student.name=%s\n", student.name);
 
 	printf("\n-------------2.1实例化方式1:struct Student stu1--------------------\n");
-	//定义一个结构体变量后,再赋值
-	struct Student stu1; //必须要有struct关键字,C++不需要
-	stu1.name = "Lee1";	 //stu1.name 是个普通char*指针，所以可以指向其他地方
+	// 定义一个结构体变量后,再赋值
+	struct Student stu1; // 必须要有struct关键字,C++不需要
+	stu1.name = "Lee1";	 // stu1.name 是个普通char*指针，所以可以指向其他地方
 	stu1.age = 17;
 	stu1.sex = 'm';
 	stu1.p_study = study;
 
-	printf("sizeof(stu1.name)=%lu\n", sizeof(stu1.name));		//8
-	printf("sizeof(stu1.age)=%lu\n", sizeof(stu1.age));			//4
-	printf("sizeof(stu1.sex)=%lu\n", sizeof(stu1.sex));			//1
-	printf("sizeof(stu1.p_study)=%lu\n", sizeof(stu1.p_study)); //8
-	printf("sizeof(stu1)=%lu\n", sizeof(stu1));					//24,为何多3个字节。。。
+	printf("sizeof(stu1.name)=%lu\n", sizeof(stu1.name));		// 8
+	printf("sizeof(stu1.age)=%lu\n", sizeof(stu1.age));			// 4
+	printf("sizeof(stu1.sex)=%lu\n", sizeof(stu1.sex));			// 1
+	printf("sizeof(stu1.p_study)=%lu\n", sizeof(stu1.p_study)); // 8
+	printf("sizeof(stu1)=%lu\n", sizeof(stu1));					// 24,为何多3个字节。。。
 
 	printf("stu1.age : %d\n", stu1.age);
 	printf("stu1.name : %s\n", stu1.name);
@@ -76,25 +82,24 @@ int main()
 	printf("stu2.name : %s\n", stu2.name);
 
 	struct Student *stup = &stu2;
-	stup->p_study("stup study English"); //间接引用运算符，访问指针所指向的结构体属性。左边必须是一级指针
+	stup->p_study("stup study English"); // 间接引用运算符，访问指针所指向的结构体属性。左边必须是一级指针
 
 	printf("\n-------------2.3实例化方式3:struct Student stu1={}------------------\n");
-	//前面带. 表示这个结构体的，可以乱序赋值
-	struct Student stu23 = { 
+	// 前面带. 表示这个结构体的，可以乱序赋值
+	struct Student stu23 = {
 		.age = 18,
 		.name = "lee23",
 		.p_study = 0,
-		.sex = 'm'
-	};
-	printf("stu23.name = %s\n",stu23.name);
+		.sex = 'm'};
+	printf("stu23.name = %s\n", stu23.name);
 
 	printf("\n-------------3.使用typedef----------------------\n");
-	Person p;		 //使用了typedef后可以不使用struct关键字
-	p.name = "张三"; //p.name是指针,所以可以指向其他地方
+	Person p;		 // 使用了typedef后可以不使用struct关键字
+	p.name = "张三"; // p.name是指针,所以可以指向其他地方
 	printf("p.name=%s\n", p.name);
 
 	printf("\n-------------4.结构体变量前加点-----------------------\n");
-	//加.可以改变初始化顺序
+	// 加.可以改变初始化顺序
 	struct Student stu3 = {.age = 17, .sex = 'm', .name = "Lee3", .p_study = study};
 
 	printf("name=%s\n", stu3.name);
