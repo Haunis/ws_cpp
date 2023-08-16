@@ -32,7 +32,7 @@ int main()
 
 	char name[4];
 	printf("字符数组地址接收，请输入name:	\n");
-	// scanf("%s", &name);
+	// scanf("%s", &name);//会有警告： format ‘%s’ expects argument of type ‘char *’, but argument 2 has type ‘char (*)[4]
 	scanf("%s", name);
 
 	printf("num: %d, name: %s\n", age, name);
