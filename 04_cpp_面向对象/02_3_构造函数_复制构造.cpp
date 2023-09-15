@@ -11,6 +11,10 @@
  *
  * 禁用复制构造：
  *      Person(const Person &p) = delete; //禁用复制构造函数
+ * 
+ * 移动构造：
+ *      带右值引用参数的拷贝构造又叫移动构造函数，如：Person(Person &&other)
+ *      具体参考左引用和右引用demo
  *
  */
 #include <stdio.h>
@@ -32,6 +36,17 @@ public:
         this->age = other.age;
         printf("复制构造: this=%#x, other=%#x\n", this, &other);
     }
+
+    
+    // 移动构造函数. 和上面的拷贝构造函数是重载.
+	// 拥有临时对象other的所有权,因为传入的是右值,调用处后续不会再用到该临时对象,称为移动语义
+	// 无需拷贝动态资源
+    Person(Person &&other) 
+    {
+        this->age = other.age;
+        printf("移动构造: this=%#x, other=%#x\n", this, &other);
+    }
+
     Person p_func()
     {
         return *this; //会调用复制构造
