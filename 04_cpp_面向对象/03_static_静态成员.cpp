@@ -3,7 +3,7 @@
  *	https://blog.csdn.net/m0_37806112/article/details/82467683
  *		
 * 	static有两种用法：面向过程的static和面向对象的static,本demo是面向对象的static
- * 		https://blog.csdn.net/legend_hua/article/details/78193239
+ * 	https://blog.csdn.net/legend_hua/article/details/78193239
  * 
  * const静态类成员可以直接初始化，其他非const的静态类成员需要在类外全局作用域下初始化，且不能使用static关键字
  * https://blog.csdn.net/qq_43915356/article/details/107368218
@@ -12,12 +12,15 @@
  * 类级别的成员，先于该类任何对象的存在而存在，它被该类所有的对象共享
  * 
  *	静态成员变量:
+ * 		修饰成员变量时，所有的对象都只维持⼀份拷⻉，可以实现不同对象间的数据共享；不需要实例化对象即可访问；
+ * 		不能在类内部初始化，⼀般在类外部初始化，并且初始化时不加 static ；
  *		定义：static int staticCount；
-			注意不能在类的内部为静态成员变量初始化
-			静态成员必须在类的外部定义(int Student::staticCount)或者初始化后(int Student::staticCount = 222)方可使用
+ *			注意不能在类的内部为静态成员变量初始化
+ *			静态成员必须在类的外部定义(int Student::staticCount)或者初始化后(int Student::staticCount = 222)方可使用
  *      调用：Class::staticCount；
  * 
  * 	静态函数：
+ *      修饰成员函数时，该函数不接受 this 指针，只能访问类的静态成员；不需要实例化对象即可访问。
  * 		定义：void static staticFun();
  * 		调用：Class::staticFun();
  *
