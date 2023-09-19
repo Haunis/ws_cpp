@@ -2,10 +2,10 @@
  *	参考:
  * 		https://zhuanlan.zhihu.com/p/97128024
  * 		https://www.cnblogs.com/likaiming/p/9045642.html
- * 
+ *
  * 	带右值引用参数的拷贝构造又叫移动构造函数，如：Person(Person &&other)
  *	带右值引用参数的赋值重载函数又叫移动赋值函数，如：Person &operator=(Person &&other)
- * 
+ *
  *  右值引用的存在并不是为了取代左值引用，而是充分利用右值(特别是临时对象)的构造来减少对象构造和析构操作以达到提高效率的目的。
  */
 #include <iostream>
@@ -16,12 +16,13 @@ using namespace std;
 class Person
 {
 public:
-	int *m_ptr; //带有堆内存的类，必须提供深拷贝构造函数
+	int *m_ptr; // 带有堆内存的类，必须提供深拷贝构造函数
+	int count = 8;
 
 public:
 	Person() : m_ptr(new int[3])
 	{
-		printf("Person 构造 this = %#x\n", this);
+		printf("Person 构造 this = %p\n", this);
 	}
 	~Person()
 	{
@@ -33,8 +34,9 @@ public:
 	// 调用时机：1.Person p2=p1 2.函数参数为对象 3.函数返回对象（具体查看面向对象demo）
 	Person(const Person &other) : m_ptr(new int[3])
 	{
+		// other.count = 10; // error; 编译报错，const修饰无法对对象内部进行修改
 		std::copy(other.m_ptr, other.m_ptr + 3, m_ptr);
-		printf("Person 复制构造 &other=%#x,this=%#x\n", &other, this);
+		printf("Person 复制构造 &other=%p,this=%p\n", &other, this);
 	}
 
 	// 移动构造函数. 和上面的拷贝构造函数是重载.
@@ -42,13 +44,13 @@ public:
 	// 无需拷贝动态资源
 	Person(Person &&other) : m_ptr(other.m_ptr)
 	{
-		//因为传入的参数是右值,是临时的,所以可以直接置为空
-		//源对象的指针应该置空，以免源对象析构时影响本对象
-		printf("Person 移动构造 ,&other=%#x,this=%#x\n", &other, this);
+		// 因为传入的参数是右值,是临时的,所以可以直接置为空
+		// 源对象的指针应该置空，以免源对象析构时影响本对象
+		printf("Person 移动构造 ,&other=%p,this=%p\n", &other, this);
 		this->m_ptr = other.m_ptr;
-		other.m_ptr = nullptr;
+		other.m_ptr = nullptr; // *****************************
 	}
-	//移动赋值函数
+	// 移动赋值函数
 	Person &operator=(Person &&other)
 	{
 		printf("operator=\n");
@@ -61,7 +63,7 @@ public:
 void func(Person p)
 {
 	// do_something
-	printf("func --> &p = %#x\n", &p);
+	printf("func --> &p = %p\n", &p);
 }
 
 int main()
@@ -76,7 +78,7 @@ int main()
 	func(Person());
 
 	printf("\n--------------------3.move ----------------------\n");
-	func(std::move(p)); //调用移动构造函数; 之后p就不可使用了，因为移动构造里把p.m_ptr置为空指针了
+	func(std::move(p)); // 调用移动构造函数; 之后p就不可使用了，因为移动构造里把p.m_ptr置为空指针了
 
 	printf("\n--------------------4.移动赋值函数 ----------------------\n");
 	Person p4;
@@ -85,7 +87,7 @@ int main()
 
 	// Person p5 = std::move(p4);//调用移动构造函数（右值构造）
 	Person p5;
-	p5 = std::move(p4); //调用移动赋值函数
+	p5 = std::move(p4); // 调用移动赋值函数
 	printf("*p5.m_ptr = %d\n", *p5.m_ptr);
 	return 0;
 }

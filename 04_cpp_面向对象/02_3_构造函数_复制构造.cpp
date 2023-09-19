@@ -61,7 +61,7 @@ public:
 void func(Person p) // 复制构造函数会被调用一次
 {
     // printf("func -->%#x\n", p);//会再次创建个对象....
-    printf("func -->%#x\n", &p);
+    printf("func p-->%#x\n", &p);
 }
 Person func2()
 {
@@ -77,6 +77,7 @@ int main(int argc, char *argv[])
 
     printf("\n---------------2.函数参数为对象----------------------\n");
     func(p1);
+
     printf("\n---------------3.函数返回对象时----------------------\n");
     func2();//由于编译器的优化，不调用复制构造
 
