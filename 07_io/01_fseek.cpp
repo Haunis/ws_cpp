@@ -26,5 +26,6 @@ int main(int arc, char *argv[])
     pos = ftell(fp);
     printf("pos = %ld\n", pos);
 
+    fclose(fp);
     return 0;
 }

@@ -3,23 +3,25 @@
  * 		https://www.cnblogs.com/kzang/archive/2012/07/16/2593133.html
  * 		https://blog.csdn.net/chenjieyujiayou/article/details/76855763
  * 		https://vimsky.com/examples/usage/fread-function-in-c.html
- * 
+ *
  * 获取文件大小：
  * 		https://blog.csdn.net/zanda_/article/details/90544856
- * 
+ *
  * fopen是c语言里的函数
- * 
+ *
  * fread:
  * 		size_t fread(void * buffer, size_t size, size_t count, FILE * stream):
- * 		buffer:它以至少(size * count)个字节的大小指定指向内存块的指针以存储对象。
- *		size:要读的字节数
- *		count:它指定元素的数量，每个元素的大小为字节大小。
- *		stream:文件指针
+ * 		buffer: 存数据的地方
+ *		size: 每个对象的大小，单位是字节
+ *		count: 读取对象的数量
+ *		stream: 文件指针
  */
 
 #include <iostream>
 #include <cstdio>
 using namespace std;
+
+const char *file_name = "abc.txt";
 
 size_t getFileSize(const std::string &file_name)
 {
@@ -27,43 +29,39 @@ size_t getFileSize(const std::string &file_name)
 	fseek(fp, 0, SEEK_END);
 	size_t size = ftell(fp);
 	fclose(fp);
-	return size; //单位是：byte
+	return size; // 单位是：byte
 }
-const char *FILE_RD = "abc.txt";
 
 int main()
 {
 
 	FILE *fp;
 
-	fp = fopen(FILE_RD, "r");
+	fp = fopen(file_name, "r");
 
-	printf("------------------1.使用char[]存储---------------------\n");
-	int fileSize = getFileSize(FILE_RD);
+	const int fileSize = getFileSize(file_name);
+	printf("fileSize=%d\n", fileSize);
 
-	char buffer[fileSize];
-	printf("fileSize=%d, sizeof(buffer)=%lu\n", fileSize, sizeof(buffer));
-
-	fread(buffer, sizeof(buffer), 1, fp);
-
-	printf("buffer: %s\n", buffer);
-	for (int i = 0; i < fileSize; i++)
-	{
-		printf("%c\t", buffer[i]);
-	}
-	printf("\n");
-
-	printf("\n----------------2.使用void*[]存储---------------------\n");
-
-	void *buffer2[100];
-	fseek(fp, 0, SEEK_SET);
+	printf("\n---------------1.使用char[]存储---------------------\n");
+	char buf[4];
 	while (!feof(fp))
 	{
-		fread(buffer2, sizeof(buffer2), 1, fp);
+		// fread(buf, 1, 4, fp); // 每次读取 1*4个字节
+		fread(buf, sizeof(buf), 1, fp); 
+		printf("%s\t", buf);
+	}
 
-		printf("buffer2: %s\n", buffer2);
+	printf("\n----------------2.使用void*[]存储---------------------\n");
+	void *buf2[100];
+	fseek(fp, 0, SEEK_SET); // 重新将文件指针指向文件开头
+	while (!feof(fp))
+	{
+		fread(buf2, sizeof(buf2), 1, fp);
+
+		printf("buf2: %s\n", buf2);
 	}
 	printf("------read end-----\n");
+	fclose(fp);
 
 	return 0;
 }

@@ -41,7 +41,7 @@
 using namespace std;
 
 const char *FILE_WR = "abc.txt";
-const char *FILE_RD = FILE_WR;
+const char *file_name = FILE_WR;
 void writeFile(string fileName)
 {
 	//无此文件则创建；文件位置：工程根目录下，运行完refresh工程
@@ -112,12 +112,12 @@ int main()
 	writeFile(FILE_WR);
 
 	cout << "------------2.ifs.getLine-------------" << endl;
-	getLine(FILE_RD);
+	getLine(file_name);
 
 	cout << "-------------3.ifs.read-------------" << endl;
-	read(FILE_RD);
+	read(file_name);
 
 	cout << "-------------4.tellg,seekg------------" << endl;
-	getFileSize(FILE_RD);
+	getFileSize(file_name);
 	return 0;
 }
