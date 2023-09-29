@@ -1,8 +1,9 @@
 #include <stdio.h>
 
-// #include "add.h"//error,不能直接包含cpp的头文件
-// int add(int x,int y);//ok; 不加extern野性
-extern int add(int x, int y);
+// #include "add.h"//error; C语言不支持extern "C"声明
+// int add(int x,int y);//ok; 不加extern也行
+// extern "C" int add(int x, int y); //error; C语言不支持extern "C"声明
+extern int add(int x, int y); //ok; 不要这行也行！不过在编译时有warning
 
 int main(int arg, char *argv[])
 {

@@ -1,26 +1,64 @@
 
 https://www.cnblogs.com/skynet/archive/2010/07/10/1774964.html
 
-extern "C"实现混合编程:
-	.cpp文件默认用g++编译,.c文件默认用gcc编译
-	如果用g++将两者编译后的.o中间文件直接链接的话,会链接错误
 
-	因为gcc编译函数和g++编译处理方式是不一样的:
-		g++编译函数是会给函数加上"_"和参数类型,如:add(int,int)处理成"_Z3addii"
-		gcc编译函数不会处理函数名,add(int,int)编译后还是 "add"
+背景知识：
+	1. gcc编译函数和g++编译处理方式是不一样的:
+			g++编译函数是会给函数加上"_"和参数类型,如:add(int,int)处理成"_Z3addii"
+			gcc编译函数不会处理函数名,add(int,int)编译后还是 "add"
+		因此：
+			g++编译后的代码到gcc编译后的.o文件寻找函数会找不到
+			反之,gcc编译后的到g++编译后的.o文件找也找不到
+	2. gcc编译c文件按C语言风格，编译cpp文件按c++风格； g++编译c和cpp文件都是按c++风格
+	3. C语言不支持extern "C"声明(gcc编译c文件时不支持)
 
-	g++编译后的代码到gcc编译后的.o寻找函数会找不到;
-	反之,gcc编译后的到g++编译后的找也找不到
 
-	cpp代码调用.c代码示例:
-		使用extern "C"引入.c代码对应的头文件即可
-		如 extern "C"{
-			#include "xxx.h"
-		   }
-	.c代码调用cpp代码:
-		不可直接include cpp的头文件,而是要修改cpp的头文件
-		cpp头文件加上 extern "C"修饰,如 extern "C" int add(int x,int y);
-	
+extern "C"实现混合编程
+	1. cpp代码调用.c代码
+		1) 如果cpp文件和c文件都是用g++编译的，编译后直接链接就行，反正都是c++风格；
+		2) 如果c文件是使用gcc编译的，那么直接链接会报错，因为c++找不到对应的函数
+		   因为，c++要找的是"_Z3addii",但c文件编译后提供的是"add"。
+
+		   此时只需要在cpp文件添加extern "C" int add(int x, int y)即可，表示告诉g++编译器找的是"add"
+
+		   处理方式1： 
+		   		直接在cpp文件声明要调用的c函数即可: extern "C" int add(int x, int y)
+		   处理方式2：
+		   		cpp文件包含c的头文件时声明extern "C"，该处理方式其实是和处理方式1是等价的： 
+				extern "C"{
+					#include "xxx.h"
+		   		}
+			c文件和其对应的头文件不用改。
+	2. c代码调用cpp代码
+		1) 如果cpp文件和c文件都是用g++编译的，编译后直接链接就行，反正都是c++风格；
+		2) 如果都是用gcc或者c文件用gcc，cpp文件用g++，那么编译后链接会报错
+			处理方式：
+				把cpp文件按c语言风格进行编译就行，其对应的头文件加不加extern "C"都行(建立加上)
+				extern "C" 
+				int add(int x,int y){
+					...
+				}
+
+			c文件声明所调用的函数在外部即可： extern int add(int x, int y); 
+
+	总结： 
+		1. cpp调用c
+			cpp文件： 
+				extern "C"{
+					#include "xxx.h"
+		   		}
+			c文件不改。
+		2. c调用cpp:
+			cpp文件：
+				extern "C" 
+				int add(int x,int y){
+					...
+				}
+			cpp头文件：extern "C" int add(int x,int y);
+
+			c文件： extern int add(int x, int y); 
+		  
+
 	
 在添加extern "C"和不添加 extern "C"的情况下使用 g++ -S main.cpp生成两个main.s
 比较两个main.s,可知添加extern "C"后,编译后的变量是按C的方式处理的
