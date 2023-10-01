@@ -7,7 +7,8 @@ int main()
 {
     printf("\n----------------1. fwrite()---------------------\n");
 
-    FILE *fp = fopen(file_name, "wb+");
+    FILE *fp = fopen(file_name, "wb+");//读写方式打开二进制文件
+    // FILE *fp = fopen(file_name, "ab+"); //读写方式打开，追加写
 
     const  char *readBuf = "abcdef";
     fwrite(readBuf + 1, 1, 4, fp); // 从readBuf指针处开始读数据，对象大小为1，一次读2个对象，读进fp

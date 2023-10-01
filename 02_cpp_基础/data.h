@@ -5,7 +5,7 @@
 enum Color
 {
 	red, green, blue, white=100, black
-} myColor;
+} myColor; //myColor是枚举变量
 
 typedef enum Config //类型名Config可以不要
 {
