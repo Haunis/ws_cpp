@@ -50,6 +50,8 @@ int main()
 	p.play();
 
 	printf("\n----------------------2.mySpace--------------------------------------\n");
+	char *mySpace_name = mySpace::space_name; //使用限定符访问名空间内容
+	printf("mySpace_name=%s\n", mySpace_name);
 	func2();
 	func3();
 
