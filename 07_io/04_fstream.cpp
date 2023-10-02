@@ -1,5 +1,7 @@
 /*
  *  Created on: 2019年3月12日
+ *  
+ *  参考：https://blog.csdn.net/YT21198/article/details/131115345
  *
  *	C++标准函数之打开文件
  *	1.主要涉及的类
@@ -48,6 +50,7 @@ void writeFile(string fileName)
 	ofstream ofs(fileName);
 	if (ofs.is_open())
 	{
+		// ofs.seekp(0); // 将文件指针移动到文件开头; 默认也是从文件头开始
 		ofs << "aaa\n";
 		// ofs << "bbb\n";
 		ofs.close();

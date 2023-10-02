@@ -28,7 +28,8 @@
  *      }
  * 
  *  释放互斥锁：
- *      pthread_mutex_unlock(&mtx);
+ *      pthread_mutex_unlock(&mtx); 
+ *      注意： 未获得锁的情况下释放锁，也是有效的！！！
  *  
  *  销毁互斥锁：
  *      pthread_mutex_destroy(&mtx)
@@ -92,13 +93,12 @@ int main()
 
 
     printf("\n-----------------2. 未获得锁，释放锁 ------------------\n");
-    // 释放未获取的锁，是无效的行为.
     pthread_t tid3;
     ret = pthread_create(&tid3, NULL, fun3, NULL); // 成功则返回ret=0
     assert(ret == 0);
 
     sleep(3);
-    pthread_mutex_unlock(&mtx); //主线程释放锁;
+    pthread_mutex_unlock(&mtx); //主线程释放锁; 有效！！！ 子线程tid3可以解阻塞！！！
 
     pthread_join(tid3, NULL); 
 
