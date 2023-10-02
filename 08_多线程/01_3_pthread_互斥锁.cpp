@@ -58,13 +58,14 @@ void *fun1(void *arg)
 
 void *fun3(void *arg)
 {
-   pthread_mutex_lock(&mtx); //不可重入！！！
-   printf("fun3...1 \n");
+    pthread_mutex_lock(&mtx);
+    // pthread_mutex_trylock(&mtx); // 不可重入！！！
+    printf("fun3...1 \n");
 
-   pthread_mutex_lock(&mtx); //不可重入！！！ 会阻塞在此！！！！
-//    pthread_mutex_trylock(&mtx); //尝试获取一下，获取不到也会继续执行..
-   printf("fun3...2 \n");
-   return NULL;
+    pthread_mutex_lock(&mtx); // 不可重入！！！ 会阻塞在此！！！！
+    // pthread_mutex_trylock(&mtx); // 尝试获取一下，获取不到也会继续执行..
+    printf("fun3...2 \n");
+    return NULL;
 }
 
 int main()
@@ -96,8 +97,10 @@ int main()
     ret = pthread_create(&tid3, NULL, fun3, NULL); // 成功则返回ret=0
     assert(ret == 0);
 
-    sleep(5);
-    pthread_mutex_unlock(&mtx); //主线程释放锁; 无效释放！！！因为主线程就没获得锁！！！！
+    sleep(3);
+    pthread_mutex_unlock(&mtx); //主线程释放锁;
+
+    pthread_join(tid3, NULL); 
 
     pthread_mutex_destroy(&mtx);//销毁锁
 
