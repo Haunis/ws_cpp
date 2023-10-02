@@ -40,6 +40,7 @@
 #include <pthread.h>
 #include <stdio.h>
 #include <assert.h>
+#include <unistd.h> //sleep
 
 int count = 0;
 pthread_mutex_t mtx;
@@ -55,12 +56,24 @@ void *fun1(void *arg)
     return NULL;
 }
 
+void *fun3(void *arg)
+{
+   pthread_mutex_lock(&mtx); //不可重入！！！
+   printf("fun3...1 \n");
+
+   pthread_mutex_lock(&mtx); //不可重入！！！ 会阻塞在此！！！！
+//    pthread_mutex_trylock(&mtx); //尝试获取一下，获取不到也会继续执行..
+   printf("fun3...2 \n");
+   return NULL;
+}
+
 int main()
 {
 
     //初始化锁； 第二个参数为 NULL，互斥锁的属性会设置为默认属性
     pthread_mutex_init(&mtx, NULL);
 
+    printf("\n-----------------1. 两线程修改同一变量 ------------------\n");
     pthread_t tid1, tid2;
     int ret;
 
@@ -76,6 +89,18 @@ int main()
     pthread_join(tid2, NULL); // 主线程等待子线程执行完..
     printf("count = %d\n", count);
 
+
+    printf("\n-----------------2. 未获得锁，释放锁 ------------------\n");
+    // 释放未获取的锁，是无效的行为.
+    pthread_t tid3;
+    ret = pthread_create(&tid3, NULL, fun3, NULL); // 成功则返回ret=0
+    assert(ret == 0);
+
+    sleep(5);
+    pthread_mutex_unlock(&mtx); //主线程释放锁; 无效释放！！！因为主线程就没获得锁！！！！
+
     pthread_mutex_destroy(&mtx);//销毁锁
+
+    printf("main end ....\n");
     return 0;
 }
